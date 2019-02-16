@@ -2,7 +2,7 @@
 #Script to Install GUI xfce to Linux on Azure.
 #Supported distros:
 #CentOS 7.[1-4]
-#Ubuntu: 16.04, 17.10
+#Ubuntu: 16.04, 17.10, 18.04
 #SuSE: 12-SP3
 #
 #
@@ -29,22 +29,22 @@ centos)
 		systemctl isolate graphical.target >> /var/log/GUI.log 2>&1 ;          	
 	fi;;
 Ubuntu)
-	if [ version == 17.* ]; then                                                               #Ubuntu 16.*	
-		apt-get update -y >> /var/log/GUI.log 2>&1 ;                                                                    #Update the operating system, install the GUI (xfce4) and xRDP.
+	if [ version == 17.* -o version == 18.04* ]; then                                                               	
+		apt-get update -y >> /var/log/GUI.log 2>&1 ;                                        
 		apt-get install xfce4 -y >> /var/log/GUI.log 2>&1 ;
 		apt-get install xrdp -y >> /var/log/GUI.log 2>&1 ;
 		apt-get install xserver-xorg-dev -y >> /var/log/GUI.log 2>&1 ;
-		echo xfce4-session >~/.xsession >> /var/log/GUI.log 2>&1 ;                                                      #Setup XRDP and xfce4: 
+		echo xfce4-session >~/.xsession >> /var/log/GUI.log 2>&1 ;                            
 		/etc/init.d/xrdp start >> /var/log/GUI.log 2>&1 ;
 		systemctl set-default graphical.target >> /var/log/GUI.log 2>&1 ;
 		systemctl isolate graphical.target >> /var/log/GUI.log 2>&1 ;
-		sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i >> /var/log/GUI.log 2>&1      #Modify the configuration file “/etc/X11/Xwrapper.config”
+		sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i >> /var/log/GUI.log 2>&1  
 		systemctl enable xrdp-sesman.service >> /var/log/GUI.log 2>&1 ;
 		systemctl restart xrdp-sesman.service >> /var/log/GUI.log 2>&1 ;
 		systemctl enable xrdp >> /var/log/GUI.log 2>&1 ;
 		systemctl restart xrdp >> /var/log/GUI.log 2>&1 ;
 	elif [ version == 16.* ]
-		then		                                                                            #Ubuntu 16.*		
+		then		                                                                            		
 			apt-get update -y >> /var/log/GUI.log 2>&1 ;
 			sudo apt-get install xfce4 -y >> /var/log/GUI.log 2>&1 ;
 			sudo apt-get install xrdp -y >> /var/log/GUI.log 2>&1 ;
@@ -53,7 +53,7 @@ Ubuntu)
 			systemctl isolate graphical.target >> /var/log/GUI.log 2>&1 ;                                    
 	fi;;
 SuSE)
-		if [ version == 12-SP[1-3] ]; then                                                          #SUSE 12.SP*
+		if [ version == 12-SP[1-3] ]; then                                                          
 			zypper -n install -t pattern gnome-basic >> /var/log/GUI.log 2>&1 ;
 			zypper -n install xrdp >> /var/log/GUI.log 2>&1 ;
 			sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i >> /var/log/GUI.log 2>&1 ;
