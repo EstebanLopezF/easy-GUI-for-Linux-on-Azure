@@ -3,7 +3,7 @@
 #Supported distros:
 #CentOS 7.[1-4]
 #Ubuntu: 16.04, 17.10, 18.04
-#SuSE: 12-SP3
+#SuSE: 11 SP4, 12 SP[2-4]
 #
 #
 
@@ -55,18 +55,23 @@ case $distro in
 	    /etc/init.d/xrdp start >> $logpath 2>&1 ;
 	    systemctl isolate graphical.target >> $logpath 2>&1 ;                                    
 	fi;;
+
   SuSE)
-		if [ version == 12-SP[1-3] ]; then                                                          
-			zypper -n install -t pattern gnome-basic >> $logpath 2>&1 ;
-			zypper -n install xrdp >> $logpath 2>&1 ;
-			sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i >> $logpath 2>&1 ;
-			systemctl start xrdp >> $logpath 2>&1 ;
-			systemctl enable xrdp >> $logpath 2>&1 ;				                  
-		elif [ version == 11-SP* ]
-			then	
-		#commands;                                              #SUSE 11.SP*		
+	if [ version == 12* ]; then                                                          
+	    zypper -n install -t pattern gnome-basic >> $logpath 2>&1 ;
+	    zypper -n install xrdp >> $logpath 2>&1 ;
+	    sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i >> $logpath 2>&1 ;
+	    systemctl start xrdp >> $logpath 2>&1 ;
+	    systemctl enable xrdp >> $logpath 2>&1 ;				                  
+
+	elif [ version == 11* ]; then
+	    zypper install -y --auto-agree-with-licenses -t pattern x11 gnome
+	    zypper -n install xrdp
+	    sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i
+	    service xrdp start
+	    chkconfig -s xrdp 35
 	fi;;
-*)
+  *)
 	echo "Unsopported distro" ;;
 esac
 
