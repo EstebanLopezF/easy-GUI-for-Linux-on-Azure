@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashdistro=`python -c 'import platform ; print platform.dist()[0]'`; echo $distro
 #Script to Install GUI xfce to Linux on Azure.
 #Supported distros:
 #CentOS 7.[1-4]
@@ -53,7 +53,19 @@ case $distro in
 	    sudo apt-get install xrdp -y >> $logpath 2>&1 ;
 	    echo xfce4-session >~/.xsession >> $logpath 2>&1 ;
 	    /etc/init.d/xrdp start >> $logpath 2>&1 ;
+	    systemctl set-default graphical.target >> $logpath 2>&1 ;
 	    systemctl isolate graphical.target >> $logpath 2>&1 ;                                    
+	fi;;
+  debian)
+	if [ version == 9 ]; then
+            apt-get update -y >> $logpath 2>&1 ; 
+	    DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y >> $logpath 2>&1 ;
+	    sudo apt-get install xfce4 -y >> $logpath 2>&1 ;
+	    sudo apt-get install xrdp -y >> $logpath 2>&1 ;
+	    echo xfce4-session >~/.xsession >> $logpath 2>&1 ;
+	    /etc/init.d/xrdp start >> $logpath 2>&1 ;
+	    systemctl set-default graphical.target >> $logpath 2>&1 ;
+	    systemctl isolate graphical.target >> $logpath 2>&1 ;
 	fi;;
 
   SuSE)
