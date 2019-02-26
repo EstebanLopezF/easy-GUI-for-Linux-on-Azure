@@ -58,14 +58,20 @@ case $distro in
 	fi;;
   debian)
 	if [ version == 9 ]; then
-            apt-get update -y >> $logpath 2>&1 ; 
-	    DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y >> $logpath 2>&1 ;
-	    sudo apt-get install xfce4 -y >> $logpath 2>&1 ;
-	    sudo apt-get install xrdp -y >> $logpath 2>&1 ;
-	    echo xfce4-session >~/.xsession >> $logpath 2>&1 ;
-	    /etc/init.d/xrdp start >> $logpath 2>&1 ;
-	    systemctl set-default graphical.target >> $logpath 2>&1 ;
-	    systemctl isolate graphical.target >> $logpath 2>&1 ;
+	    DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y >> $logpath 2>&1; 
+	    apt-get update -y >> $logpath 2>&1;
+            apt-get install xfce4 -y >> $logpath 2>&1;
+            apt-get install xrdp -y >> $logpath 2>&1;
+            apt-get install xserver-xorg-dev -y >> $logpath 2>&1;
+            echo xfce4-session >~/.xsession >> $logpath 2>&1;
+            /etc/init.d/xrdp start >> $logpath 2>&1;
+            systemctl set-default graphical.target >> $logpath 2>&1;
+            systemctl isolate graphical.target >> $logpath 2>&1;
+            sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i >> $logpath 2>&1; 
+            systemctl enable xrdp-sesman.service >> $logpath 2>&1;
+            systemctl restart xrdp-sesman.service >> $logpath 2>&1;
+            systemctl enable xrdp >> $logpath 2>&1;
+            systemctl restart xrdp >> $logpath 2>&1;
 	fi;;
 
   SuSE)
