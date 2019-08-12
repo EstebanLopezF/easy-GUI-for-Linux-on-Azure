@@ -1,0 +1,100 @@
+#Commands to setup GUI and xRDP for Azure endorsed Linux Distributions.
+
+#CentOS/RedHat 7
+
+	    yum groupinstall 'Server with GUI' -y 
+	    firewall-cmd --permanent --zone=public --add-port=3389/tcp 
+	    firewall-cmd --reload 
+	    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
+	    yum install xrdp tigervnc-server xterm -y 
+	    systemctl start xrdp 
+	    systemctl start xrdp-sesman 
+	    systemctl enable xrdp 
+	    systemctl enable xrdp-sesman 
+	    systemctl set-default graphical.target 
+	    systemctl isolate graphical.target     	
+
+
+#Ubuntu 16           
+                                                                 		
+	    apt-get update -y 
+	    sudo apt-get install xfce4 -y 
+	    sudo apt-get install xrdp -y 
+	    echo xfce4-session >~/.xsession 
+	    /etc/init.d/xrdp start 
+	    systemctl set-default graphical.target 
+	    systemctl isolate graphical.target 
+	
+		
+#Ubuntu 18
+	                                                          	
+	    apt-get update -y >> $logpath 2>&1 ;                                        
+	    apt-get install xfce4 -y >> $logpath 2>&1 ;
+	    apt-get install xrdp -y >> $logpath 2>&1 ;
+	    apt-get install xserver-xorg-dev -y >> $logpath 2>&1 ;
+	    echo xfce4-session >~/.xsession >> $logpath 2>&1 ;                            
+	    /etc/init.d/xrdp start >> $logpath 2>&1 ;
+	    systemctl set-default graphical.target >> $logpath 2>&1 ;
+	    systemctl isolate graphical.target >> $logpath 2>&1 ;
+	    sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i >> $logpath 2>&1  
+	    systemctl enable xrdp-sesman.service >> $logpath 2>&1 ;
+	    systemctl restart xrdp-sesman.service >> $logpath 2>&1 ;
+	    systemctl enable xrdp >> $logpath 2>&1 ;
+	    systemctl restart xrdp >> $logpath 2>&1 ;
+
+
+Debian 9
+	
+	      DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y 
+	      apt-get update -y 
+        apt-get install xfce4 -y
+        apt-get install xrdp -y 
+        apt-get install xserver-xorg-dev -y
+        echo xfce4-session >~/.xsession
+        /etc/init.d/xrdp start
+        systemctl set-default graphical.target 
+        systemctl isolate graphical.target 
+        sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i 
+        systemctl enable xrdp-sesman.service 
+        systemctl restart xrdp-sesman.service 
+        systemctl enable xrdp 
+        systemctl restart xrdp 
+
+		
+#Debian 8
+
+	      DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y 
+        apt-get update -y 
+        apt-get install xfce4 -y
+        apt-get install xrdp -y 
+        apt-get install xserver-xorg-dev -y 
+        echo xfce4-session >~/.xsession 
+        /etc/init.d/xrdp start 
+        systemctl set-default graphical.target 
+        systemctl isolate graphical.target 
+        sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i 
+        systemctl enable xrdp 
+        systemctl restart xrdp
+	
+	
+#SuSe 11
+
+	    zypper install -y --auto-agree-with-licenses -t pattern x11 gnome
+      zypper -n install xrdp
+	    sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i
+	    service xrdp start
+	    chkconfig -s xrdp 35
+	
+	
+#SuSE 12
+                                        
+	    zypper -n install -t pattern gnome-basic 
+	    zypper -n install xrdp 
+	    sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i 
+	   	systemctl set-default multi-user.target
+      zypper in -f kernel-default
+      zypper ref
+      zypper update
+      zypper dup
+	    systemctl start xrdp 
+	    systemctl enable xrdp	
