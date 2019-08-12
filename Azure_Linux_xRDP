@@ -47,43 +47,43 @@ Debian 9
 	
 	      DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y 
 	      apt-get update -y 
-        apt-get install xfce4 -y
-        apt-get install xrdp -y 
-        apt-get install xserver-xorg-dev -y
-        echo xfce4-session >~/.xsession
-        /etc/init.d/xrdp start
-        systemctl set-default graphical.target 
-        systemctl isolate graphical.target 
-        sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i 
-        systemctl enable xrdp-sesman.service 
-        systemctl restart xrdp-sesman.service 
-        systemctl enable xrdp 
-        systemctl restart xrdp 
+              apt-get install xfce4 -y
+              apt-get install xrdp -y 
+              apt-get install xserver-xorg-dev -y
+              echo xfce4-session >~/.xsession
+              /etc/init.d/xrdp start
+              systemctl set-default graphical.target 
+              systemctl isolate graphical.target 
+              sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i 
+              systemctl enable xrdp-sesman.service 
+              systemctl restart xrdp-sesman.service 
+              systemctl enable xrdp 
+              systemctl restart xrdp 
 
 		
 #Debian 8
 
 	      DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y 
-        apt-get update -y 
-        apt-get install xfce4 -y
-        apt-get install xrdp -y 
-        apt-get install xserver-xorg-dev -y 
-        echo xfce4-session >~/.xsession 
-        /etc/init.d/xrdp start 
-        systemctl set-default graphical.target 
-        systemctl isolate graphical.target 
-        sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i 
-        systemctl enable xrdp 
-        systemctl restart xrdp
+              apt-get update -y 
+              apt-get install xfce4 -y
+              apt-get install xrdp -y 
+              apt-get install xserver-xorg-dev -y 
+              echo xfce4-session >~/.xsession 
+              /etc/init.d/xrdp start 
+              systemctl set-default graphical.target 
+              systemctl isolate graphical.target 
+              sed 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config -i 
+              systemctl enable xrdp 
+              systemctl restart xrdp
 	
 	
 #SuSe 11
 
-	    zypper install -y --auto-agree-with-licenses -t pattern x11 gnome
-      zypper -n install xrdp
-	    sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i
-	    service xrdp start
-	    chkconfig -s xrdp 35
+	     zypper install -y --auto-agree-with-licenses -t pattern x11 gnome
+             zypper -n install xrdp
+	     sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i
+	     service xrdp start
+	     chkconfig -s xrdp 35
 	
 	
 #SuSE 12
@@ -91,10 +91,10 @@ Debian 9
 	    zypper -n install -t pattern gnome-basic 
 	    zypper -n install xrdp 
 	    sed 's/DEFAULT_WM=""/DEFAULT_WM="gnome"/g' /etc/sysconfig/windowmanager -i 
-	   	systemctl set-default multi-user.target
-      zypper in -f kernel-default
-      zypper ref
-      zypper update
-      zypper dup
+	    systemctl set-default multi-user.target
+            zypper in -f kernel-default
+            zypper ref
+            zypper update
+            zypper dup
 	    systemctl start xrdp 
 	    systemctl enable xrdp	
